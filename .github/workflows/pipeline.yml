@@ -1,4 +1,4 @@
-name: Simple CI Pipeline
+name: CI/CD Pipeline with Deployment
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
@@ -23,3 +23,12 @@ jobs:
         with:
           name: website-files
           path: build/
+
+      - name: Deploy to Server
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.SERVER_IP }}
+          username: ubuntu
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          source: "build/*"
+          target: "/var/www/html/"
