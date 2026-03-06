@@ -1,0 +1,25 @@
+name: Simple CI Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Build static site
+        run: |
+          mkdir build
+          cp index.html build/
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: website-files
+          path: build/
